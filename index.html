@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Media Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #141E30, #243B55);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    nav {
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    nav h2 {
+      margin: 0;
+      font-size: 1.6rem;
+      background: linear-gradient(45deg, #00C6FF, #0072FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      transition: 0.3s;
+      position: relative;
+    }
+    nav ul li a:hover { color: #00C6FF; }
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -5px;
+      width: 0;
+      height: 2px;
+      background: #00C6FF;
+      transition: width 0.3s;
+    }
+    nav ul li a:hover::after { width: 100%; }
+
+    /* Hamburger menu */
+    .menu-toggle {
+      display: none;
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
+
+    @media(max-width: 768px) {
+      nav ul {
+        display: none;
+        flex-direction: column;
+        background: rgba(0,0,0,0.9);
+        position: absolute;
+        top: 60px;
+        right: 10px;
+        padding: 15px;
+        border-radius: 10px;
+      }
+      nav ul.active { display: flex; }
+      .menu-toggle { display: block; }
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 2rem;
+    }
+
+    /* Search box */
+    .search-box {
+      margin: 20px auto;
+      max-width: 600px;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 50px;
+      padding: 5px 10px;
+      box-shadow: 0px 5px 20px rgba(0,0,0,0.3);
+    }
+    .search-box input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      border-radius: 50px;
+    }
+    .search-box button {
+      background: #00C6FF;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #fff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 8px;
+    }
+    .search-box button:hover { background: #0072FF; }
+
+    #status {
+      text-align: center;
+      margin-top: 8px;
+      font-style: italic;
+      color: #FFD700;
+    }
+
+    /* Card container */
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    /* Cards */
+    .card {
+      background: linear-gradient(145deg, #1f2c47, #2c3e65);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.4);
+    }
+    .card i, .card img {
+      font-size: 40px;
+      margin-bottom: 8px;
+    }
+    .card h3 { margin: 8px 0 0; font-size: 1rem; }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <h2>Social Hub</h2>
+    <span class="menu-toggle"><i class="fa fa-bars"></i></span>
+    <ul>
+      <li><a href="#socialContainer">Apps</a></li>
+      <li><a href="#">News</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <h1>Search Your Favorite App</h1>
+
+  <!-- Search Box -->
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search or speak a platform...">
+    <button id="micBtn"><i class="fa-solid fa-microphone"></i></button>
+  </div>
+  <div id="status"></div>
+
+  <!-- App Cards -->
+  <div class="container" id="socialContainer">
+    <a class="card" data-name="instagram" href="https://www.instagram.com" target="_blank">
+      <i class="fa-brands fa-instagram" style="color:#E1306C"></i><h3>Instagram</h3>
+    </a>
+    <a class="card" data-name="facebook" href="https://www.facebook.com" target="_blank">
+      <i class="fa-brands fa-facebook" style="color:#1877F2"></i><h3>Facebook</h3>
+    </a>
+    <a class="card" data-name="youtube" href="https://www.youtube.com" target="_blank">
+      <i class="fa-brands fa-youtube" style="color:#FF0000"></i><h3>YouTube</h3>
+    </a>
+    <a class="card" data-name="whatsapp" href="https://www.whatsapp.com" target="_blank">
+      <i class="fa-brands fa-whatsapp" style="color:#25D366"></i><h3>WhatsApp</h3>
+    </a>
+    <a class="card" data-name="linkedin" href="https://www.linkedin.com" target="_blank">
+      <i class="fa-brands fa-linkedin" style="color:#0A66C2"></i><h3>LinkedIn</h3>
+    </a>
+    <a class="card" data-name="twitter" href="https://twitter.com" target="_blank">
+      <i class="fa-brands fa-x-twitter" style="color:#000"></i><h3>Twitter (X)</h3>
+    </a>
+    <a class="card" data-name="telegram" href="https://telegram.org" target="_blank">
+      <i class="fa-brands fa-telegram" style="color:#0088cc"></i><h3>Telegram</h3>
+    </a>
+    <a class="card" data-name="quora" href="https://www.quora.com" target="_blank">
+      <i class="fa-brands fa-quora" style="color:#B92B27"></i><h3>Quora</h3>
+    </a>
+    <a class="card" data-name="pinterest" href="https://www.pinterest.com" target="_blank">
+      <i class="fa-brands fa-pinterest" style="color:#E60023"></i><h3>Pinterest</h3>
+    </a>
+    <a class="card" data-name="spotify" href="https://www.spotify.com" target="_blank">
+      <i class="fa-brands fa-spotify" style="color:#1DB954"></i><h3>Spotify</h3>
+    </a>
+    <a class="card" data-name="google classroom" href="https://classroom.google.com" target="_blank">
+      <img src="https://seeklogo.com/images/G/google-classroom-logo-620EDE7030-seeklogo.com.png" width="40"><h3>Google Classroom</h3>
+    </a>
+    <a class="card" data-name="truecaller" href="https://www.truecaller.com" target="_blank">
+      <img src="https://seeklogo.com/images/T/truecaller-logo-5860C0C6E4-seeklogo.com.png" width="40"><h3>Truecaller</h3>
+    </a>
+  </div>
+
+  <script>
+    // Navbar toggle
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navLinks = document.querySelector("nav ul");
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+    });
+
+    const searchInput = document.getElementById("searchInput");
+    const cards = document.querySelectorAll(".card");
+    const micBtn = document.getElementById("micBtn");
+    const statusDiv = document.getElementById("status");
+
+    // Text Search
+    searchInput.addEventListener("input", () => {
+      const searchValue = searchInput.value.toLowerCase();
+      cards.forEach(card => {
+        const name = card.getAttribute("data-name");
+        card.classList.toggle("hidden", !name.includes(searchValue));
+      });
+    });
+
+    // Voice Search
+    micBtn.addEventListener("click", () => {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      if (!SpeechRecognition) {
+        let fallback = prompt("🎤 Your browser doesn’t support voice recognition.\nType your search here:");
+        if (fallback) {
+          searchInput.value = fallback;
+          searchInput.dispatchEvent(new Event("input"));
+        }
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+
+      recognition.start();
+      statusDiv.textContent = "🎤 Listening...";
+
+      recognition.onresult = (event) => {
+        const spokenText = event.results[0][0].transcript.toLowerCase();
+        searchInput.value = spokenText;
+        searchInput.dispatchEvent(new Event("input"));
+        statusDiv.textContent = "✅ Heard: " + spokenText;
+      };
+
+      recognition.onerror = (event) => {
+        statusDiv.textContent = "❌ Error: " + event.error;
+      };
+
+      recognition.onend = () => {
+        setTimeout(() => statusDiv.textContent = "", 2000);
+      };
+    });
+  </script>
+</body>
+</html>
