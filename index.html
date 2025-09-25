@@ -150,9 +150,13 @@
       transform: translateY(-8px) scale(1.05);
       box-shadow: 0px 8px 20px rgba(0,0,0,0.4);
     }
+    /* Set consistent size for icons and images */
     .card i, .card img {
       font-size: 40px;
+      width: 40px; 
+      height: 40px; 
       margin-bottom: 8px;
+      object-fit: contain; 
     }
     .card h3 { margin: 8px 0 0; font-size: 1rem; }
 
@@ -161,7 +165,6 @@
 </head>
 <body>
 
-  <!-- Navbar -->
   <nav>
     <h2>Social Hub</h2>
     <span class="menu-toggle"><i class="fa fa-bars"></i></span>
@@ -175,14 +178,12 @@
 
   <h1>Search Your Favorite App</h1>
 
-  <!-- Search Box -->
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search or speak a platform...">
     <button id="micBtn"><i class="fa-solid fa-microphone"></i></button>
   </div>
   <div id="status"></div>
 
-  <!-- App Cards -->
   <div class="container" id="socialContainer">
     <a class="card" data-name="instagram" href="https://www.instagram.com" target="_blank">
       <i class="fa-brands fa-instagram" style="color:#E1306C"></i><h3>Instagram</h3>
@@ -200,7 +201,7 @@
       <i class="fa-brands fa-linkedin" style="color:#0A66C2"></i><h3>LinkedIn</h3>
     </a>
     <a class="card" data-name="twitter" href="https://twitter.com" target="_blank">
-      <i class="fa-brands fa-x-twitter" style="color:#000"></i><h3>Twitter (X)</h3>
+      <i class="fa-brands fa-square-x-twitter" style="color:#FFFFFF"></i><h3>Twitter (X)</h3>
     </a>
     <a class="card" data-name="telegram" href="https://telegram.org" target="_blank">
       <i class="fa-brands fa-telegram" style="color:#0088cc"></i><h3>Telegram</h3>
@@ -214,11 +215,14 @@
     <a class="card" data-name="spotify" href="https://www.spotify.com" target="_blank">
       <i class="fa-brands fa-spotify" style="color:#1DB954"></i><h3>Spotify</h3>
     </a>
-    <a class="card" data-name="google classroom" href="https://classroom.google.com" target="_blank">
-      <img src="https://seeklogo.com/images/G/google-classroom-logo-620EDE7030-seeklogo.com.png" width="40"><h3>Google Classroom</h3>
+    <a class="card" data-name="chatgpt" href="https://chat.openai.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT Logo"><h3>ChatGPT</h3>
     </a>
-    <a class="card" data-name="truecaller" href="https://www.truecaller.com" target="_blank">
-      <img src="https://seeklogo.com/images/T/truecaller-logo-5860C0C6E4-seeklogo.com.png" width="40"><h3>Truecaller</h3>
+    <a class="card" data-name="perplexity" href="https://www.perplexity.ai" target="_blank">
+      <img src="https://tse3.mm.bing.net/th/id/OIP.ISHYO0OGblTOBMNaKDjAEQHaDt?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Perplexity AI Logo"><h3>Perplexity AI</h3>
+    </a>
+    <a class="card" data-name="gemini" href="https://gemini.google.com" target="_blank">
+      <img src="https://seeklogo.com/images/G/google-gemini-logo-A5787B2669-seeklogo.com.png" alt="Gemini AI Logo"><h3>Gemini AI</h3>
     </a>
   </div>
 
@@ -240,44 +244,62 @@
       const searchValue = searchInput.value.toLowerCase();
       cards.forEach(card => {
         const name = card.getAttribute("data-name");
+        // Hide card if its data-name does NOT include the search value
         card.classList.toggle("hidden", !name.includes(searchValue));
       });
     });
 
-    // Voice Search
+    // Voice Search (desktop + mobile) - ***FIXED to remove trailing punctuation***
     micBtn.addEventListener("click", () => {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
       if (!SpeechRecognition) {
-        let fallback = prompt("🎤 Your browser doesn’t support voice recognition.\nType your search here:");
+        // Fallback for browsers that don't support it
+        const fallback = prompt("🎤 Your browser doesn’t support voice recognition.\nType your search here:");
         if (fallback) {
           searchInput.value = fallback;
+          // Trigger the input event to run the search logic
           searchInput.dispatchEvent(new Event("input"));
         }
         return;
       }
 
       const recognition = new SpeechRecognition();
-      recognition.lang = "en-US";
-      recognition.interimResults = false;
+      recognition.lang = 'en-US'; // Set language
+      recognition.interimResults = false; // Only get final results
+      recognition.maxAlternatives = 1; // Only get the best result
 
-      recognition.start();
-      statusDiv.textContent = "🎤 Listening...";
-
-      recognition.onresult = (event) => {
-        const spokenText = event.results[0][0].transcript.toLowerCase();
-        searchInput.value = spokenText;
-        searchInput.dispatchEvent(new Event("input"));
-        statusDiv.textContent = "✅ Heard: " + spokenText;
+      // Event for when recognition starts
+      recognition.onstart = () => {
+        statusDiv.textContent = "🎙️ Listening... Speak now.";
       };
 
-      recognition.onerror = (event) => {
-        statusDiv.textContent = "❌ Error: " + event.error;
-      };
-
+      // Event for when recognition stops
       recognition.onend = () => {
-        setTimeout(() => statusDiv.textContent = "", 2000);
+        statusDiv.textContent = "";
       };
+
+      // Event for when a result is received
+      recognition.onresult = (event) => {
+        const last = event.results.length - 1;
+        let speechResult = event.results[last][0].transcript.toLowerCase();
+        
+        // *** CORE FIX: Remove trailing punctuation (like '.') from the end of the recognized text ***
+        const cleanedSpeechResult = speechResult.replace(/[.,!?]$/, '').trim();
+
+        statusDiv.textContent = `✅ Recognized: ${cleanedSpeechResult}`;
+        searchInput.value = cleanedSpeechResult;
+        
+        // Trigger the input event to run the search logic
+        searchInput.dispatchEvent(new Event("input"));
+      };
+
+      // Event for errors
+      recognition.onerror = (event) => {
+        statusDiv.textContent = `❌ Voice error: ${event.error}`;
+      };
+
+      // Start the recognition process
+      recognition.start();
     });
   </script>
 </body>
