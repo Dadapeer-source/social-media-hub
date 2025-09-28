@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Hub</title>
+  <!-- Font Awesome for mic icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+      color: #333;
+      text-align: center;
+    }
+    header {
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #222;
+    }
+    .search-box {
+      margin: 15px auto;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .search-box input {
+      padding: 10px;
+      width: 250px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 14px;
+    }
+    .search-box button {
+      border: none;
+      background: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    .search-box button:hover {
+      background: #45a049;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 15px;
+      padding: 15px;
+      text-decoration: none;
+      color: #333;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 10px;
+      object-fit: contain;
+      display: block;
+    }
+    .card h3 {
+      margin: 0;
+      font-size: 14px;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 22px;
+      }
+      .search-box input {
+        width: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌐 Social Hub</h1>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search apps...">
+      <button onclick="startVoiceSearch()"><i class="fa fa-microphone"></i></button>
+    </div>
+  </header>
+
+  <div class="container" id="socialContainer">
+    <!-- Existing Apps -->
+    <a class="card" data-name="whatsapp" href="https://web.whatsapp.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Logo"><h3>WhatsApp</h3>
+    </a>
+    <a class="card" data-name="instagram" href="https://www.instagram.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo"><h3>Instagram</h3>
+    </a>
+    <a class="card" data-name="facebook" href="https://www.facebook.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook Logo"><h3>Facebook</h3>
+    </a>
+    <a class="card" data-name="twitter" href="https://x.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/X_logo_2023_original.svg" alt="X Logo"><h3>Twitter (X)</h3>
+    </a>
+    <a class="card" data-name="linkedin" href="https://www.linkedin.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn Logo"><h3>LinkedIn</h3>
+    </a>
+    <a class="card" data-name="youtube" href="https://www.youtube.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube Logo"><h3>YouTube</h3>
+    </a>
+    <a class="card" data-name="netflix" href="https://www.netflix.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix Logo"><h3>Netflix</h3>
+    </a>
+    <a class="card" data-name="canva" href="https://www.canva.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg" alt="Canva Logo"><h3>Canva</h3>
+    </a>
+    <a class="card" data-name="gmail" href="https://mail.google.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Gmail Logo"><h3>Gmail</h3>
+    </a>
+    <a class="card" data-name="chrome" href="https://www.google.com/chrome/" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Google_Chrome_icon_%282011%29.png" alt="Chrome Logo"><h3>Chrome</h3>
+    </a>
+
+    <!-- New Apps -->
+    <a class="card" data-name="snapchat" href="https://www.snapchat.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/en/c/c4/Snapchat_logo.svg" alt="Snapchat Logo"><h3>Snapchat</h3>
+    </a>
+    <a class="card" data-name="disneyhotstar" href="https://www.hotstar.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Disney%2B_Hotstar_logo.svg" alt="Hotstar Logo"><h3>Disney+ Hotstar</h3>
+    </a>
+    <a class="card" data-name="tiktok" href="https://www.tiktok.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/en/6/69/TikTok_logo.svg" alt="TikTok Logo"><h3>TikTok</h3>
+    </a>
+    <a class="card" data-name="adobeexpress" href="https://www.adobe.com/express/" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Adobe_Express_CC_icon.svg" alt="Adobe Express Logo"><h3>Adobe Express</h3>
+    </a>
+    <a class="card" data-name="amazon" href="https://www.amazon.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon Logo"><h3>Amazon</h3>
+    </a>
+    <a class="card" data-name="flipkart" href="https://www.flipkart.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/Flipkart_logo.png" alt="Flipkart Logo"><h3>Flipkart</h3>
+    </a>
+    <a class="card" data-name="meesho" href="https://www.meesho.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Meesho_Logo.png" alt="Meesho Logo"><h3>Meesho</h3>
+    </a>
+    <a class="card" data-name="zomato" href="https://www.zomato.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Zomato_logo.png" alt="Zomato Logo"><h3>Zomato</h3>
+    </a>
+    <a class="card" data-name="swiggy" href="https://www.swiggy.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Swiggy_logo.svg" alt="Swiggy Logo"><h3>Swiggy</h3>
+    </a>
+    <a class="card" data-name="paypal" href="https://www.paypal.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal Logo"><h3>PayPal</h3>
+    </a>
+    <a class="card" data-name="phonepe" href="https://www.phonepe.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/PhonePe_Logo.svg" alt="PhonePe Logo"><h3>PhonePe</h3>
+    </a>
+    <a class="card" data-name="capcut" href="https://www.capcut.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/en/7/70/CapCut_icon.png" alt="CapCut Logo"><h3>CapCut</h3>
+    </a>
+
+    <!-- Added: ChatGPT, Gemini, Perplexity -->
+    <a class="card" data-name="chatgpt" href="https://chat.openai.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT Logo"><h3>ChatGPT</h3>
+    </a>
+    <a class="card" data-name="gemini" href="https://gemini.google.com" target="_blank">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Google_Gemini_logo.svg" alt="Gemini Logo"><h3>Gemini</h3>
+    </a>
+    <a class="card" data-name="perplexity" href="https://www.perplexity.ai" target="_blank">
+      <img src="https://seeklogo.com/images/P/perplexity-ai-logo-DC6E17A251-seeklogo.com.png" alt="Perplexity Logo"><h3>Perplexity</h3>
+    </a>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const cards = document.querySelectorAll(".card");
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      cards.forEach(card => {
+        card.style.display = card.dataset.name.includes(query) ? "flex" : "none";
+      });
+    });
+
+    function startVoiceSearch() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        try {
+          const recognition = new SpeechRecognition();
+          recognition.lang = "en-US";
+          recognition.continuous = false;
+          recognition.interimResults = false;
+          recognition.start();
+
+          recognition.onresult = (event) => {
+            const query = event.results[0][0].transcript.toLowerCase();
+            searchInput.value = query;
+            searchInput.dispatchEvent(new Event("input"));
+          };
+
+          recognition.onerror = (event) => {
+            alert("Voice search error: " + event.error);
+          };
+
+          recognition.onnomatch = () => {
+            alert("No speech recognized. Please try again.");
+          };
+        } catch (e) {
+          alert("Microphone access failed. Please check permissions.");
+        }
+      } else {
+        alert("Voice recognition not supported on this browser.");
+      }
+    }
+  </script>
+</body>
+</html>
